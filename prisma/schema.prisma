@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  username String @unique
+  password String
+}
+
+model Student {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  studentId String
+  name      String
+  batch     String
+  email     String @unique
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  teamName    String   @unique
+  teamId      String   @unique
+  category    String
+  members     TeamMember[]
+  submission  Submission?
+  evaluation  Evaluation?
+  createdAt   DateTime @default(now())
+}
+
+model TeamMember {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  studentId String
+  name      String
+  batch     String
+  email     String
+  team      Team   @relation(fields: [teamDbId], references: [id], onDelete: Cascade)
+  teamDbId  String @db.ObjectId
+}
+
+model Submission {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  team       Team     @relation(fields: [teamDbId], references: [id], onDelete: Cascade)
+  teamDbId   String   @unique @db.ObjectId
+  teamEmail  String
+  projectUrl String
+  notes      String?
+  createdAt  DateTime @default(now())
+}
+
+model Evaluation {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  team        Team   @relation(fields: [teamDbId], references: [id], onDelete: Cascade)
+  teamDbId    String @unique @db.ObjectId
+  uiUx        Int    @default(0)
+  codeQuality Int    @default(0)
+  folderStructure Int @default(0)
+  functionality   Int @default(0)
+  innovation      Int @default(0)
+  totalMarks      Int @default(0)
+  percentage      Float @default(0)
+  grade           String @default("")
+  position        Int?
+  createdAt       DateTime @default(now())
+}
+
+model Settings {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  submissionsOpen   Boolean @default(false)
+}
