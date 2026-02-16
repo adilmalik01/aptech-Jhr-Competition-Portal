@@ -34,60 +34,32 @@ const fullStackProjects = [
   {
     id: 1,
     label: 'Project Idea 1',
-    title: 'Coming Soon',
-    notAssigned: true
+    title: 'Mini Social Media Website',
+    link: '/Mini_Social_Media_Documentation.pdf',
+    notAssigned: false
   },
   {
     id: 2,
     label: 'Project Idea 2',
-    title: 'Coming Soon',
-    notAssigned: true
+    title: 'Event Management System',
+    link: '/Event_Management_System_Documentation.pdf',
+    notAssigned: false
   },
   {
     id: 3,
     label: 'Project Idea 3',
-    title: 'Coming Soon',
-    notAssigned: true
+    title: 'Restaurant Table Reservation System',
+    link: '/Restaurant_Table_Reservation_System_Documentation.pdf',
+    notAssigned: false
   }
 ]
+
 
 export default function CategoriesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a1e2e] via-[#112436] to-[#0d1b28]">
       {/* Navigation */}
-      <nav className="bg-[#0a1e2e]/80 backdrop-blur-md border-b border-cyan-500/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-cyan-400 text-2xl font-bold">&gt;</span>
-              <div>
-                <h2 className="text-white font-bold text-lg">AJCC</h2>
-                <p className="text-cyan-400 text-xs uppercase tracking-wider">Coding Comp</p>
-              </div>
-            </Link>
 
-            {/* Nav Links */}
-            <div className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-slate-400 hover:text-cyan-400 font-medium transition-colors">
-                Home
-              </Link>
-              <Link href="/registration" className="text-slate-400 hover:text-cyan-400 font-medium transition-colors">
-                Registration
-              </Link>
-              <Link href="/categories" className="text-cyan-400 font-medium">
-                Categories
-              </Link>
-              <Link href="/submission" className="text-slate-400 hover:text-cyan-400 font-medium transition-colors">
-                Submission
-              </Link>
-              <Link href="/results" className="text-slate-400 hover:text-cyan-400 font-medium transition-colors">
-                Check Result
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
 
       {/* Page Header */}
       <div className="text-center py-16 px-4">
@@ -179,22 +151,33 @@ function CategoryCard({ icon, title, description, instructions, projects }: any)
     </div>
   )
 }
-
 function ProjectItem({ project }: any) {
-  if (project.notAssigned) {
+
+  // 👉 Case 1: Full Stack Project (PDF / Document)
+  if (project.link) {
     return (
-      <div className="bg-[#0a1e2e]/50 border border-cyan-500/15 rounded-xl p-5">
+      <div className="bg-[#0a1e2e]/50 border border-cyan-500/15 rounded-xl p-5 hover:border-cyan-500/40 transition">
         <div className="text-cyan-400 text-xs uppercase tracking-wider font-semibold mb-1">
           {project.label}
         </div>
-        <div className="text-white font-semibold text-lg mb-2">{project.title}</div>
-        <span className="inline-block bg-red-500/10 border border-red-500/30 text-red-400 px-3 py-1 rounded-md text-sm font-semibold">
-          📌 Not Assigned Yet
-        </span>
+
+        <div className="text-white font-semibold text-lg mb-3">
+          {project.title}
+        </div>
+
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+          className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm font-medium"
+        >
+          📄 View / Download Document
+        </a>
       </div>
     )
   }
-
+  // 👉 Case 2: Web Designing Project (External URL)
   return (
     <a
       href={project.url}
@@ -207,9 +190,14 @@ function ProjectItem({ project }: any) {
           <div className="text-cyan-400 text-xs uppercase tracking-wider font-semibold mb-1">
             {project.label}
           </div>
-          <div className="text-white font-semibold text-lg mb-1">{project.title}</div>
-          <div className="text-slate-400 text-sm">{project.description}</div>
+          <div className="text-white font-semibold text-lg mb-1">
+            {project.title}
+          </div>
+          <div className="text-slate-400 text-sm">
+            {project.description}
+          </div>
         </div>
+
         <span className="text-cyan-400 text-xl group-hover:translate-x-1 transition-transform">
           →
         </span>
